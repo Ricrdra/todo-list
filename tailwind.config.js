@@ -6,7 +6,7 @@ module.exports = {
     theme: {
         extend: {
             backgroundImage: {
-                "accept": "url('../public/img/aceptar.png')",
+                "accept": "url('../public/img/accept.png')",
                 "deny": "url('../public/img/deny.png')"
             }
 
