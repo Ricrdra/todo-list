@@ -7,7 +7,7 @@ import CreateTodoButton from "./components/CreateTodoButton";
 
 // import './App.css';
 
-const todos = [
+let defTodos = [
     {
         key: 1,
         text: 'Learn React',
@@ -61,14 +61,52 @@ const todos = [
 ];
 
 function App() {
+    const [todos, setTodos] = React.useState(defTodos);
+    const [searchValue, setSearchValue] = React.useState('');
+
+    const completedTodos = todos.filter(todo => todo.completed).length;
+    const totalTodos = todos.length;
+
+
+    const completeTodo = (key) => {
+        const todoIndex = todos.findIndex(todo => todo.key === key);
+        const newTodos = [...todos];
+        newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
+        setTodos(newTodos);
+    };
+
+    const deleteTodo = (key) => {
+        const todoIndex = todos.findIndex(todo => todo.key === key);
+        const newTodos = [...todos];
+        newTodos.splice(todoIndex, 1);
+        setTodos(newTodos);
+    }
+
+
+    let searchedTodos = [];
+
+    if (searchValue.length <= 0) {
+        searchedTodos = todos;
+    } else {
+        searchedTodos = todos.filter(todo => todo.text.toLowerCase().includes(searchValue.toLowerCase()));
+    }
+
+
     return (
         <React.Fragment>
-            <TodoCounter/>
-            <TodoSearch/>
+            <TodoCounter
+                total={totalTodos}
+                completed={completedTodos}
+            />
+            <TodoSearch
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+            />
             <TodoList>
-                {todos.map(todo => (
-                    <TodoItem key={todo.key} text={todo.text} onComplete={todo.onComplete}
-                              completed={todo.completed}/>
+                {searchedTodos.map(todo => (
+                    <TodoItem todo={todo} key={todo.key} completeTodo={() => completeTodo(todo.key)}
+
+                              deleteTodo={() => deleteTodo(todo.key)}/>
                 ))}
             </TodoList>
             <CreateTodoButton/>

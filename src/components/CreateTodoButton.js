@@ -14,5 +14,4 @@ function CreateTodoButton() {
     );
 }
 
-
 export default CreateTodoButton;
