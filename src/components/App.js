@@ -4,7 +4,7 @@ import {AppUI} from './AppUI';
 let defTodos = [
     {
         key: 1,
-        text: 'Learn React',
+        text: 'Learn RunTodo',
         completed: true,
         onComplete: () => {
             this.completed = true;
@@ -12,50 +12,44 @@ let defTodos = [
     },
     {
         key: 2,
-        text: 'Learn Redux',
+        text: 'Create new Todos',
         completed: false
 
         , onComplete: () => {
             this.completed = true;
         }
     },
-    {
-        key: 3,
-        text: 'Learn React Router',
-        completed: false, onComplete: () => {
-            this.completed = true;
-        }
 
-    },
-    {
-        key: 4,
-        text: 'Learn React Redux',
-        completed: false, onComplete: () => {
-            this.completed = true;
-        }
-
-    },
-    {
-        key: 5,
-        text: 'Learn React Router Redux',
-        completed: false, onComplete: () => {
-            this.completed = true;
-        }
-
-    },
-    {
-        key: 6,
-        text: 'Learn Node.js',
-        completed: true,
-        onComplete: () => {
-            this.completed = true;
-        }
-
-    }
 ];
 
+
+function useLocalStorage(itemName, defaultValue = []) {
+
+    const localStorageItem = localStorage.getItem(itemName);
+    let parsedItems;
+
+
+    if (!localStorageItem) {
+        localStorage.setItem(itemName, JSON.stringify(defaultValue));
+        parsedItems = defTodos;
+    } else {
+        parsedItems = JSON.parse(localStorageItem);
+    }
+    const [items, setItems] = React.useState(parsedItems);
+
+    const saveItem = (newItems) => {
+        const stringifyItems = JSON.stringify(newItems);
+        localStorage.setItem(itemName, stringifyItems);
+        setItems(newItems);
+    }
+
+    return [items,
+        saveItem];
+}
+
+
 function App() {
-    const [todos, setTodos] = React.useState(defTodos);
+    const [todos, saveTodos] = useLocalStorage('TODOS_V1', defTodos);
     const [searchValue, setSearchValue] = React.useState('');
 
     const completedTodos = todos.filter(todo => todo.completed).length;
@@ -66,14 +60,15 @@ function App() {
         const todoIndex = todos.findIndex(todo => todo.key === key);
         const newTodos = [...todos];
         newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
-        setTodos(newTodos);
+        saveTodos(newTodos);
+
     };
 
     const deleteTodo = (key) => {
         const todoIndex = todos.findIndex(todo => todo.key === key);
         const newTodos = [...todos];
         newTodos.splice(todoIndex, 1);
-        setTodos(newTodos);
+        saveTodos(newTodos);
     }
 
 
@@ -85,11 +80,14 @@ function App() {
         searchedTodos = todos.filter(todo => todo.text.toLowerCase().includes(searchValue.toLowerCase()));
     }
 
+    React.useEffect(() => {
+        console.log('Using efects')
+    }, [totalTodos]);
+
 
     return (
         <AppUI
             todos={todos}
-            setTodos={setTodos}
             searchValue={searchValue}
             setSearchValue={setSearchValue}
             completedTodos={completedTodos}
