@@ -1,13 +1,20 @@
 import React from 'react';
+import {TodoContext} from "../TodoContext/TodoContext";
 
 function CreateTodoButton() {
+
+    const {creating, setCreating} = React.useContext(TodoContext);
+    console.log(creating);
+
     const onClickButton = () => {
+        setCreating(true);
+        console.log(creating);
     };
 
     return (
         <button id="createTodo"
                 className="bg-white rounded-3xl px-2 py-2 h-auto my-5 transition ease-in-out hover:scale-110 hover:bg-blue-400"
-                onClick={onClickButton}>
+                onClick={() => onClickButton()}>
 
             <span className="">Create Todo</span>
         </button>
