@@ -2,9 +2,8 @@ import React from 'react';
 import {TodoContext} from "../TodoContext/TodoContext";
 
 
-function TodoCounter() {
+function TodoCounter({totalTodos, completedTodos}) {
 
-    const {totalTodos, completedTodos} = React.useContext(TodoContext);
 
     const text = totalTodos === completedTodos ? 'You don\'t have tasks, Awesome!' : `You have completed ${completedTodos} of ${totalTodos} task`;
     return (

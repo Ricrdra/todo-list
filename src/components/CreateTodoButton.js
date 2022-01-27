@@ -1,10 +1,8 @@
 import React from 'react';
 import {TodoContext} from "../TodoContext/TodoContext";
 
-function CreateTodoButton() {
+function CreateTodoButton({creating, setCreating}) {
 
-    const {creating, setCreating} = React.useContext(TodoContext);
-    console.log(creating);
 
     const onClickButton = () => {
         setCreating(true);

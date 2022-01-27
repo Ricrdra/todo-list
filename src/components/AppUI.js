@@ -8,16 +8,31 @@ import {TodoContext} from "../TodoContext/TodoContext";
 
 import Modal from "./Modal";
 import CreateTodoModal from "./CreateTodoModal";
+import TodoHeader from "./TodoHeader";
 
 function AppUI() {
 
-    const {error, loading, searchedTodos, completeTodo, deleteTodo} = React.useContext(TodoContext);
+    const {
+        error,
+        loading,
+        searchedTodos,
+        completeTodo,
+        deleteTodo,
+        totalTodos,
+        completedTodos,
+        setSearchValue,
+        searchValue,
+        addTodo,
+        creating,
+        setCreating
+    } = React.useContext(TodoContext);
 
     return (
         <React.Fragment>
-
-            <TodoCounter/>
-            <TodoSearch/>
+            <TodoHeader>
+                <TodoCounter totalTodos={totalTodos} completedTodos={completedTodos}/>
+                <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue}/>
+            </TodoHeader>
 
             <TodoList>
                 {error && <p>And error has occurred, sorry</p>}
@@ -32,8 +47,11 @@ function AppUI() {
                               deleteTodo={() => deleteTodo(todo.key)}/>
                 ))}
             </TodoList>
-            <CreateTodoModal/>
-            <CreateTodoButton/>
+
+
+            <CreateTodoButton creating={creating} setCreating={setCreating}/>
+
+            <CreateTodoModal creating={creating} setCreating={setCreating} addTodo={addTodo}/>
         </React.Fragment>
     );
 }

@@ -3,8 +3,7 @@ import Modal from './Modal';
 import {TodoContext} from '../TodoContext/TodoContext';
 import CreateTodoButton from "./CreateTodoButton";
 
-function CreateTodoModal() {
-    const {creating, setCreating, addTodo} = React.useContext(TodoContext);
+function CreateTodoModal({creating, setCreating, addTodo}) {
 
 
     const onClickButton = () => {
