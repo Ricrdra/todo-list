@@ -1,7 +1,6 @@
 import React from 'react';
 import useLocalStorage from "./useLocalStorage";
 
-const TodoContext = React.createContext();
 let defTodos = [
     {
         key: 1,
@@ -16,12 +15,14 @@ let defTodos = [
 
 ];
 
-function TodoProvider(props) {
+function useTodos() {
     const {
         items: todos,
         saveItem: saveTodos,
         loading,
-        error
+        error,
+        sync,
+        setSync
     } = useLocalStorage('TODOS_V1', defTodos);
 
 
@@ -34,7 +35,7 @@ function TodoProvider(props) {
 
 
     const completeTodo = (key) => {
-        const todoIndex = todos.findIndex(todo => todo.key === key);
+        const todoIndex = todos.findIndex(todo => todo.text === key);
         const newTodos = [...todos];
         newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
         saveTodos(newTodos);
@@ -42,7 +43,7 @@ function TodoProvider(props) {
     };
 
     const deleteTodo = (key) => {
-        const todoIndex = todos.findIndex(todo => todo.key === key);
+        const todoIndex = todos.findIndex(todo => todo.text === key);
         const newTodos = [...todos];
         newTodos.splice(todoIndex, 1);
         saveTodos(newTodos);
@@ -70,26 +71,21 @@ function TodoProvider(props) {
     }
 
 
-    return (
-        <TodoContext.Provider value={{
-            loading,
-            todos,
-            searchValue,
-            setSearchValue,
-            completedTodos,
-            totalTodos,
-            completeTodo,
-            deleteTodo,
-            searchedTodos,
-            error,
-            creating,
-            setCreating,
-            addTodo
-        }}>
-            {props.children}
-        </TodoContext.Provider>
-
-    );
+    return {
+        loading,
+        todos,
+        searchValue,
+        setSearchValue,
+        completedTodos,
+        totalTodos,
+        completeTodo,
+        deleteTodo,
+        searchedTodos,
+        error,
+        creating,
+        setCreating,
+        addTodo
+    };
 }
 
-export {TodoContext, TodoProvider};
+export {useTodos};

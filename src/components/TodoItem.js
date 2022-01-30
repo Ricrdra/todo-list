@@ -3,7 +3,7 @@ import React from 'react';
 function TodoItem({todo, completeTodo, deleteTodo}) {
 
     return (
-        <li className="bg-white shadow-2xl text-gray-700 py-5 px-5 transition hover:translate-y-1 hover:scale-105 ease-in relative">
+        <li className="bg-white shadow-2xl text-gray-700 py-5 px-5 transition hover:translate-y-1 hover:scale-105 ease-in relative rounded">
             <span
                 className="absolute -top-5 left-3 icon-clickable  bg-deny bg-contain bg-center bg-no-repeat overflow-visible"
                 onClick={deleteTodo}

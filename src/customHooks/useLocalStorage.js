@@ -1,14 +1,25 @@
 import React from "react";
 
-function useLocalStorage(itemName, defaultValue = []) {
+function useLocalStorage(itemName, defaultValue = [], withSync = true) {
+
+    const [sync, setSync] = React.useState(false)
     const [loading, setLoading] = React.useState(true);
     const [items, setItems] = React.useState(defaultValue);
     const [error, setError] = React.useState(false);
+
+    if (withSync) {
+        window.addEventListener("storage", (change) => {
+
+            if (change.key === itemName) {
+                setSync(sync + 1);
+            }
+        });
+    }
     React.useEffect(() => {
 
         setTimeout(() => {
-
             try {
+
                 const localStorageItem = localStorage.getItem(itemName);
                 let parsedItems;
 
@@ -24,10 +35,8 @@ function useLocalStorage(itemName, defaultValue = []) {
             } catch (e) {
                 setError(true);
             }
-
-
-        }, 1000);
-    },);
+        }, 0);
+    }, [sync]);
 
 
     const saveItem = (newItems) => {
@@ -40,7 +49,9 @@ function useLocalStorage(itemName, defaultValue = []) {
         items,
         saveItem,
         loading,
-        error
+        error,
+        sync,
+        setSync
     };
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from './Modal';
-import {TodoContext} from '../TodoContext/TodoContext';
+import {TodoContext} from '../customHooks/useTodos';
 import CreateTodoButton from "./CreateTodoButton";
 
 function CreateTodoModal({creating, setCreating, addTodo}) {
