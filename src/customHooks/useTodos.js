@@ -21,8 +21,6 @@ function useTodos() {
         saveItem: saveTodos,
         loading,
         error,
-        sync,
-        setSync
     } = useLocalStorage('TODOS_V1', defTodos);
 
 
@@ -39,7 +37,6 @@ function useTodos() {
         const newTodos = [...todos];
         newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
         saveTodos(newTodos);
-
     };
 
     const deleteTodo = (key) => {
